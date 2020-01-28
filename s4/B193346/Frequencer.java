@@ -57,6 +57,7 @@ public class Frequencer implements FrequencerInterface{
 	// "Hi"     <  "Ho"       ; if head is same, compare the next element
 	// "Ho"     <  "Ho "      ; if the prefix is identical, longer string is big
 	//
+       /*
         if(i==j) return 0;
         int n,m;
         n=i;
@@ -70,6 +71,23 @@ public class Frequencer implements FrequencerInterface{
         if(mySpace[n] < mySpace[m]) { return -1; }
         if(mySpace[n] > mySpace[m]) { return  1; }
         return 0;
+    */
+        int res = 0;
+        int length = mySpace.length;
+        //set the loop count and check and record whitch is longer string in 'res'
+        if      (i==j)  { return 0; }
+        else if (i>j)   { length -= i; res = -1; }
+        else if (i<j)   { length -= j; res = 1;}
+        //if the comparison string is different, record in 'res'
+        for(int k=0; k<length ; k++) {
+            if (mySpace[i+k] != mySpace[j+k]){
+                if(mySpace[i+k] > mySpace[j+k]) { res = 1; }
+                else                            { res = -1; }
+                break;
+            }
+        }
+        return res;
+     
     }
 
     public void setSpace(byte []space) { 
@@ -82,7 +100,7 @@ public class Frequencer implements FrequencerInterface{
         // Sorting is not implmented yet.
         //
         int tmpI=0;
-        byte tmpB=0;
+        //byte tmpB=0;
         for (int i=0;i<mySpace.length;i++){
             for (int j=i+1;j<mySpace.length;j++){
                 if(suffixCompare(suffixArray[i],suffixArray[j])==1) {
@@ -91,6 +109,28 @@ public class Frequencer implements FrequencerInterface{
                 }
             }
         }
+        
+        int left,right;
+        int ptr=0;
+        int[] leftStack = new int [mySpace.length];
+        int[] rightStack = new int [mySpace.length];
+        leftStack[0]=0;
+        rightStack[0]=mySpace.length-1;
+        ptr++;
+        while(ptr-- > 0){
+            int pleft = left = leftStack[ptr];
+            int pright = right = rightStack[ptr];
+            int x = suffixArray[(pleft+pright)/2];
+            int x1 = suffixArray[pleft];
+            int x2 = suffixArray[pright];
+            if((x<=x1 && x1<=x2) || (x2<=x1 && x1<=x)) x=x1;
+            if((x<=x2 && x2<=x1) || (x1<=x2 && x2<=x)) x=x2;
+            do{
+                while(suffixArray[pleft]<x)
+            }
+            
+        }
+        
     }
 
     private int targetCompare(int i, int start, int end) {
