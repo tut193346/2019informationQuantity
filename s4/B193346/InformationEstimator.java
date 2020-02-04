@@ -79,14 +79,11 @@ public class InformationEstimator implements InformationEstimatorInterface{
                 if(!dp.containsKey(key)){
                     myFrequencer.setTarget(subBytes(myTarget, start, end));
                     dp.put(key,iq(myFrequencer.frequency()));
-                    System.out.print("("+start+","+end+":"+key+")"+iq(myFrequencer.frequency()));
                 }
-                System.out.println(dp.get(key));
                 value1 += dp.get(key);
                 start = end;
             }
-	     System.out.println(dp.isEmpty());
-
+	     
 	    // Get the minimal value in "value"
             if(value1 < value) value = value1;
         }
