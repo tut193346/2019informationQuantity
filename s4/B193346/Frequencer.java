@@ -158,12 +158,12 @@ public class Frequencer implements FrequencerInterface{
 	// For "Ho ", it will return 6 for "Hi Ho Hi Ho".
 	//   6 means suffix_6,
 	//   Please note suffix_6 is "Ho Hi Ho", and "Ho " starts from here.
-        
+        /*
         for (int i=0;i<mySpace.length;i++) {
             if(targetCompare(suffixArray[i],start,end)==0) { return i; }
         }
         return -1;
-        /*
+        */
         //binary_search from the left side
         int l = 0;
         int r = mySpace.length-1;
@@ -173,14 +173,15 @@ public class Frequencer implements FrequencerInterface{
             if(targetCompare(suffixArray[i],start,end)==-1){
                 l = i+1;
             } else {
-                r = i-1;
+                r = i;
             }
         }
-        if((targetCompare(suffixArray[i],start,end)==0)) {
+         
+        if((targetCompare(suffixArray[l],start,end)==0)) {
             return l;
         }
         return -1;
-        */
+        
     }
 
     private int subByteEndIndex(int start, int end) {
@@ -193,29 +194,32 @@ public class Frequencer implements FrequencerInterface{
 	//  Please note suffix_7 is "i Ho Hi", which does not start with "Ho" nor "Ho ".
         //  Whereas suffix_5 is "Ho Hi Ho", which starts "Ho" and "Ho ".
 	//
-        
+        /*
         for (int i=mySpace.length-1;i>=0;i--) {
-            if(targetCompare(suffixArray[i],start,end)==0) { return i+1; }
+            if(targetCompare(suffixArray[i],start,end)==0) { System.out.println(i); return i+1; }
         }
         return -1;
-        /*
+        */
         //binary_search from the right side
         int l = 0;
-        int r = mySpace.length;
-        int i = 0;//(l+r)/2;
+        int r = mySpace.length-1;
+        int i = (l+r)/2;
         while (l < r) {
             i = (l+r)/2;
             if(targetCompare(suffixArray[i],start,end)==1){
-                r = i;
+                r = i-1;
             } else {
                 l = i+1;
             }
         }
-        if((l==r) && (targetCompare(suffixArray[i],start,end)==0)) {
-            return l;
+        //System.out.println(l+" "+i+" "+r);
+        if((targetCompare(suffixArray[r],start,end)==0)) {
+            return r+1;
+        } else if((targetCompare(suffixArray[r-1],start,end)==0)) {
+            return r;
         }
         return -1;
-        */
+        
     }
 
     public int subByteFrequency(int start, int end) {
@@ -232,7 +236,7 @@ public class Frequencer implements FrequencerInterface{
 	*/
         int first = subByteStartIndex(start, end);
         int last1 = subByteEndIndex(start, end);
-        System.out.println("first:"+first+", last1:"+last1);
+        //System.out.println("first:"+first+", last1:"+last1);
         return last1 - first;
     }
 
@@ -277,11 +281,20 @@ public class Frequencer implements FrequencerInterface{
             int result = frequencerObject.frequency();
             System.out.print("Freq = "+ result+" ");
             if(4 == result) { System.out.println("OK"); } else {System.out.println("WRONG"); }
+            
+            
+            frequencerObject.setSpace("i".getBytes());
+            frequencerObject.setTarget("Hio".getBytes());
+            System.out.println("i:tac:H = "+ frequencerObject.targetCompare(0,0,1));
+            System.out.println("i:tac:i = "+ frequencerObject.targetCompare(0,1,2));
+            System.out.println("i:tac:o = "+ frequencerObject.targetCompare(0,2,3));
  
         }
         catch(Exception e) {
             System.out.println("STOP");
         }
+        
+    
     }
 }	    
 	    
